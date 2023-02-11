@@ -1,0 +1,11 @@
+project:
+  title: "teaching_repo"
+  output-dir: output
+execute:
+  echo: false
+  message: false
+  warning: false
+bibliography: reference_docs/bibliography.bib
+
+
+

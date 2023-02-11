@@ -1,0 +1,149 @@
+---
+title: "A Fantastic Penguin Paper"
+author: "Sarah Pederzani"
+format: docx
+execute:
+  echo: false
+  message: false
+  warning: false
+  fig-width: 7
+  fig-height: 6
+bibliography: input/reference_docs/bibliography.bib
+---
+
+```{r}
+#|label: setup
+#|include: false
+
+# load libraries
+library(ggplot2)
+library(dplyr)
+library(knitr)
+
+# load data
+penguins <- read.csv("input/data/penguins.csv")
+
+```
+
+### Abstract
+
+The Palmer Archipelago is home to a diverse array of penguin species, each with its own unique body size and flipper length adaptations. These adaptations play a crucial role in the survival and success of these species in their respective environments. For example, smaller body sizes and shorter flippers allow penguins to conserve energy while swimming, while larger body sizes and longer flippers provide greater mobility and stability on land. However, the interplay between these characteristics is complex and can vary greatly between species, making it challenging to draw broad conclusions about the relationship between body size and flipper length in penguins. Nevertheless, it is clear that these adaptations are important indicators of a penguin's ecological niche and play a key role in shaping the diversity of penguin species found in the Palmer Archipelago.
+
+# Introduction
+
+The Palmer Archipelago is a group of islands located off the Antarctic Peninsula. It is home to many species of penguins, including Adélie, chinstrap, and gentoo penguins (@fig-species). These penguins are known for their distinctive black and white feathers, as well as their striking red and yellow bills and flippers.
+
+![Penguin species in the Palmer Archipelago include Gentoo, Adelie and Chinstrap penguins. Artwork by Allison Horst.](input/images/penguins.png){#fig-species}
+
+# Intro to copy
+
+The Palmer Archipelago is a group of islands located off the Antarctic Peninsula. It is home to many species of penguins, including Adélie, chinstrap, and gentoo penguins. These penguins are known for their distinctive black and white feathers, as well as their striking red and yellow bills and flippers.
+
+Penguin bills and flippers are important adaptations for life in the cold, harsh environment of the Palmer Archipelago. The bills of penguins are used for hunting, feeding, and social interactions. They are sharp and pointed, allowing the penguins to catch and hold onto their prey. The flippers of penguins are used for swimming and maneuvering through the water. They are long and streamlined, helping the penguins to move quickly and efficiently.
+
+The size and shape of penguin bills and flippers vary among different species and can even vary within a single species. For example, Adélie penguins have a shorter, thicker bill than chinstrap penguins, which have a longer, thinner bill. Gentoo penguins have the longest bill of all penguin species, and they also have the longest flippers.
+
+The bill and flipper dimensions of penguins in the Palmer Archipelago are important for their survival in the cold, harsh environment. The size and shape of these body parts help the penguins to find food, avoid predators, and navigate through the icy waters. In addition, the bill and flipper dimensions of penguins are also used by scientists to study the evolution and ecology of these fascinating animals.
+
+# Methods
+
+## Markup formatting
+
+The text in this paper was formatted using the markup formatting language in a quarto document.
+
+bold - **bold**\
+italic - *italics*\
+subscript - H~2~O\
+superscript - ^14^C
+
+### Lists
+
+The Penguin species in Palmer Archipelago are
+
+-   Chinstrap
+-   Gentoo
+-   Adelie
+
+or use
+
+-   look at my awesome bullet point
+-   lists so nice to tidy
+
+Numbered list of islands
+
+1.  Torgersen
+2.  Biscoe
+3.  Dream
+
+## chunk options
+
+echo : FALSE - supress code printing\
+eval : FALSE - show code but don't evaluate the code\
+warning : FALSE - don't print warnings\
+message : FALSE - don't print messages (i.e. package loading messages)\
+fig-cap : figure caption\
+fig-width : default figure width fig-height : default figure height
+
+
+**SWITCH TO PDF HERE?**
+
+## Data
+
+All data was obtained from the palmerpenguins package [@Horst2020].
+
+# Results
+
+The relationship between body mass and flipper length for different penguin species can be seen in @fig-penguins.
+
+```{r}
+#| label: fig-penguins
+#| fig-cap: "Flipper length correlates with body mass in Palmer Island penguins. "
+
+
+ggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g, 
+                          fill = species)) + 
+  stat_ellipse(geom = "polygon", type = "norm", level = 0.95, alpha = 0.3, color = NA)+
+  geom_point(size = 3, shape = 21, color = "black")+
+  facet_wrap( ~ sex)+
+  theme_bw()+
+  labs(x = "Flipper length (mm)", 
+       y = "Body mass (g)", 
+       fill = "Species")+
+  theme(axis.title = element_text(size = 14), 
+        legend.position = "bottom")+
+  scale_fill_manual(values = c("#2E778F", "#7FC0A6", "#DB3445"))+
+  NULL
+
+
+
+```
+
+```{r}
+#| label: tbl-bodymass
+#| tbl-cap: "Overview of mean bodymass by species and island. "
+
+penguins_summary <- penguins %>%
+  group_by(island, species) %>%
+  summarise(mean_body_mass = round(mean(body_mass_g), 1))
+
+kable(penguins_summary)
+
+```
+
+The mean body mass of Adelie penguins on Biscoe Island is `r penguins_summary$mean_body_mass[1]` g. An overview of mean bodymass by penguin species and island can be found in @tbl-bodymass.
+
+## Latex math
+
+Latex equations
+
+Latex equations with Latex math mode
+
+Put some inline Latex math mode like so $E = mc^2$
+
+Or put separated equations like this:
+
+$$y = \mu + \sum_{i=1}^p \beta_i x_i + \epsilon$$
+
+{{< pagebreak >}}
+
+# References
